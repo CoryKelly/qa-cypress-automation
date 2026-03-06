@@ -1,0 +1,22 @@
+{
+  "name": "qa-cypress-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cy:chrome": "cypress run --browser chrome",
+    "cy:firefox": "cypress run --browser firefox",
+    "cy:headed": "cypress run --browser headed",
+    "cy:headless": "cypress run --browser headless",
+    "cy:api": "cypress run --spec 'cypress/e2e/api/**/*.cy.js'",
+    "cy:ui": "cypress run --spec 'cypress/e2e/ui/**/*.cy.js'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^15.11.0"
+  }
+}
