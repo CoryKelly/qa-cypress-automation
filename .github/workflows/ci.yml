@@ -14,12 +14,10 @@ jobs:
       - name: Checkout Cypress repo
         uses: actions/checkout@v4
 
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
 
       - name: Install Cypress dependencies
         run: npm install
@@ -28,37 +26,35 @@ jobs:
       - name: Clone API repo
         run: git clone https://github.com/CoryKelly/qa-testing-playground-api ../api
 
-
       - name: Install API dependencies
-        run: npm install
         working-directory: ../api
-
+        run: npm install
 
       - name: Start API
-        run: npm run dev &
         working-directory: ../api
-
+        run: |
+          npm run dev -- --host 0.0.0.0 &
+          sleep 5
 
       - name: Wait for API
-        run: npx wait-on http://localhost:3000
+        run: npx wait-on http://localhost:3000 --timeout 60000
 
 
       - name: Clone UI repo
         run: git clone https://github.com/CoryKelly/qa-testing-playground-ui ../ui
 
-
       - name: Install UI dependencies
-        run: npm install
         working-directory: ../ui
-
+        run: npm install
 
       - name: Start UI
-        run: npm run dev -- --host &
         working-directory: ../ui
-
+        run: |
+          npm run dev -- --host 0.0.0.0 &
+          sleep 5
 
       - name: Wait for UI
-        run: npx wait-on http://localhost:5173
+        run: npx wait-on http://localhost:5173 --timeout 60000
 
 
       - name: Run Cypress tests
