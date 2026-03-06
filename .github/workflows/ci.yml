@@ -1,0 +1,65 @@
+name: Cypress E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Cypress repo
+        uses: actions/checkout@v4
+
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+
+      - name: Install Cypress dependencies
+        run: npm install
+
+
+      - name: Clone API repo
+        run: git clone https://github.com/CoryKelly/qa-testing-playground-api ../api
+
+
+      - name: Install API dependencies
+        run: npm install
+        working-directory: ../api
+
+
+      - name: Start API
+        run: npm run dev &
+        working-directory: ../api
+
+
+      - name: Wait for API
+        run: npx wait-on http://localhost:3000
+
+
+      - name: Clone UI repo
+        run: git clone https://github.com/CoryKelly/qa-testing-playground-ui ../ui
+
+
+      - name: Install UI dependencies
+        run: npm install
+        working-directory: ../ui
+
+
+      - name: Start UI
+        run: npm run dev -- --host &
+        working-directory: ../ui
+
+
+      - name: Wait for UI
+        run: npx wait-on http://localhost:5173
+
+
+      - name: Run Cypress tests
+        run: npx cypress run
