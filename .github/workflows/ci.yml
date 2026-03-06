@@ -14,12 +14,10 @@ jobs:
       - name: Checkout Cypress repo
         uses: actions/checkout@v4
 
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
 
       - name: Install Cypress dependencies
         run: npm install
@@ -37,12 +35,12 @@ jobs:
       - name: Start API
         working-directory: ../api
         run: |
-          nohup npm run dev > api.log 2>&1 &
-          sleep 5
+          npm run dev &
+          echo "API started"
 
 
       - name: Wait for API
-        run: npx wait-on http://localhost:3000 --timeout 60000
+        run: npx wait-on tcp:3000 --timeout 60000
 
 
       - name: Clone UI repo
@@ -57,12 +55,12 @@ jobs:
       - name: Start UI
         working-directory: ../ui
         run: |
-          nohup npm run dev -- --host > ui.log 2>&1 &
-          sleep 5
+          npm run dev -- --host &
+          echo "UI started"
 
 
       - name: Wait for UI
-        run: npx wait-on http://localhost:5173 --timeout 60000
+        run: npx wait-on tcp:5173 --timeout 60000
 
 
       - name: Run Cypress tests
